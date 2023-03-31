@@ -1,4 +1,4 @@
-/* eslint-disable max-lines-per-function */
+/* eslint-disable */
 import {
   Box,
   Checkbox,
@@ -14,6 +14,8 @@ import { TiArrowLeftThick, TiArrowRightThick } from 'react-icons/ti';
 import { UserAppointments } from '../user/UserAppointments';
 import { DateBox } from './DateBox';
 import { useAppointments } from './hooks/useAppointments';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 export function Calendar(): ReactElement {
   const currentDate = dayjs();
