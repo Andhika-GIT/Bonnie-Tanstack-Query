@@ -90,6 +90,12 @@ export function useAppointments(): UseAppointments {
     queryKey: [queryKeys.appointments, monthYear.year, monthYear.monthName],
     queryFn: () => getAppointments(monthYear.year, monthYear.monthName),
     select: showAll ? undefined : selectFn,
+    // overriding re-fetch default
+    staleTime: 0, // 0 minutes
+    cacheTime: 300000, // 5 minutes
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   // prefetch
