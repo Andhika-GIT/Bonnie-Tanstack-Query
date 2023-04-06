@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { AxiosResponse } from 'axios';
+import { useEffect } from 'react';
 
 import type { User } from '../../../../../shared/types';
 import { axiosInstance, getJWTHeader } from '../../../axiosInstance';
@@ -33,9 +34,10 @@ export function useUser(): UseUser {
   const queryClient = useQueryClient();
   // TODO: call useQuery to update user data from server
 
-  // THIS IS ONLY RUN AFTER USER SIGN IN OR AFTER updateUser RUN IN LOGIN PROCESS
-  // IT LOOK INTO THE CACHE DATA THAT IS ALREADY FILL WITH DATA FROM updateUser()
+  // THIS WILL KEEP RUN TO KEEP THE USER DATA UPDATED
+  // IT LOOK INTO THE CACHE DATA THAT IS ALREADY FILL WITH DATA FROM updateUser() AFTER USER LOGIN
   const { data: user } = useQuery({
+    initialData: getStoredUser(),
     queryKey: [queryKeys.user],
     queryFn: () => getUser(user),
   });
@@ -52,6 +54,16 @@ export function useUser(): UseUser {
     // TODO: reset user to null in query cache
     queryClient.setQueryData([queryKeys.user], null);
   }
+
+  useEffect(() => {
+    if (!user) {
+      // if there's not user, clear the localstorage
+      clearStoredUser();
+    } else {
+      // else, update the localstorage with the updated user data
+      setStoredUser(user);
+    }
+  }, [user]); // if user changes
 
   return { user, updateUser, clearUser };
 }
