@@ -51,8 +51,11 @@ export function useUser(): UseUser {
 
   // meant to be called from useAuth
   function clearUser() {
-    // TODO: reset user to null in query cache
+    // reset user to null in query cache
     queryClient.setQueryData([queryKeys.user], null);
+
+    // remove the query with the key ('user-appointments')
+    queryClient.removeQueries(['user-appointments']);
   }
 
   useEffect(() => {
