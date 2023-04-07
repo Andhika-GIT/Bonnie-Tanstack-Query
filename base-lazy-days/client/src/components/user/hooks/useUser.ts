@@ -55,7 +55,7 @@ export function useUser(): UseUser {
     queryClient.setQueryData([queryKeys.user], null);
 
     // remove the query with the key ('user-appointments')
-    queryClient.removeQueries(['user-appointments']);
+    queryClient.removeQueries([queryKeys.appointments, queryKeys.user]);
   }
 
   useEffect(() => {
