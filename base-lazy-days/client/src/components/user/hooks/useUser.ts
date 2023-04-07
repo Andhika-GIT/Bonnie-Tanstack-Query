@@ -13,12 +13,16 @@ import {
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-async function getUser(user: User | null): Promise<User | null> {
+async function getUser(
+  user: User | null,
+  signal: AbortSignal,
+): Promise<User | null> {
   if (!user) return null;
   const { data }: AxiosResponse<{ user: User }> = await axiosInstance.get(
     `/user/${user.id}`,
     {
       headers: getJWTHeader(user),
+      signal,
     },
   );
   return data.user;
@@ -39,7 +43,7 @@ export function useUser(): UseUser {
   const { data: user } = useQuery({
     initialData: getStoredUser(),
     queryKey: [queryKeys.user],
-    queryFn: () => getUser(user),
+    queryFn: ({ signal }) => getUser(user, signal),
   });
 
   // meant to be called from useAuth
