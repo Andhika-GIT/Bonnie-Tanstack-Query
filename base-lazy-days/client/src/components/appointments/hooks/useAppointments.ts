@@ -88,7 +88,7 @@ export function useAppointments(): UseAppointments {
 
   const { data: appointments = fallback } = useQuery({
     queryKey: [queryKeys.appointments, monthYear.year, monthYear.monthName],
-    queryFn: () => getAppointments(monthYear.year, monthYear.monthName),
+    queryFn: () => getAppointments(monthYear.year, monthYear.month),
     select: showAll ? undefined : selectFn,
     // overriding re-fetch default
     staleTime: 0, // 0 minutes
